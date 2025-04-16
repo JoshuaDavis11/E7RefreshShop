@@ -4,76 +4,65 @@ using System.Runtime.InteropServices;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
+using System.IO;
+
 
 namespace E7RefreshShop
 {
     class Program
     {
-        [DllImport("user32.dll")]
-        static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
-
-        [DllImport("user32.dll")]
-        static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct RECT
-        {
-            public int Left;
-            public int Top;
-            public int Right;
-            public int Bottom;
-
-            public int Width => Right - Left;
-            public int Height => Bottom - Top;
-        }
-
-        [DllImport("user32.dll")]
-        static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
-
         static void Main(string[] args)
         {
-            //This only resizes the the game if you're running it through Google games beta
-            string windowName = "Epic Seven : Origin";
+            //Move the window to predefined size and position
+            MoveWindowHelper.MoveGoogleGamesWindowHelper();
 
-            IntPtr hWnd = FindWindow(null, windowName);
+            //Get the path to the template images
+            string refreshTemplatePath = Path.Combine("assests", "refreshbutton.png");
+            Bitmap refreshTemplate = new Bitmap(refreshTemplatePath);
 
-            if (hWnd == IntPtr.Zero)
+            string friendshipTemplatePath = Path.Combine("assests", "friendship.png");
+            Bitmap friendshipTemplate = new Bitmap(friendshipTemplatePath);
+
+            //string bookmarksTemplatePath = Path.Combine("assests", "cov.JPG");
+            //Bitmap bookmarksTemplate = new Bitmap(bookmarksTemplatePath);
+
+            //string mysticTemplatePath = Path.Combine("assests", "mys.JPG");
+            //Bitmap mysticTemplate = new Bitmap(bookmarksTemplatePath);
+
+
+
+
+
+
+            //TODO: loop this entire process until the user presses a key
+            //Take a screenshot of the game window
+            var screenShot = ScreenshotHelper.TakeScreenShot();
+
+            //Compare the screenshot with the template
+            Point refreshButtonPos = (Point)ScreenshotHelper.FindTemplate(screenShot, refreshTemplate);
+            Point friendshipPos = (Point)ScreenshotHelper.FindTemplate(screenShot, friendshipTemplate);
+
+            //Point bookmarkPos = (Point)ScreenshotHelper.FindTemplate(screenShot, bookmarksTemplate);
+            //Point mysticPos = (Point)ScreenshotHelper.FindTemplate(screenShot, mysticTemplate);
+
+
+            //Move mouse to the location of the refresh button
+            //MouseHelper.MoveMouse(refreshButtonPos.X,refreshButtonPos.Y);
+            //MouseHelper.LeftClick();
+
+            //Move mouse to the location of the friendship button
+            if(friendshipPos != null)
             {
-                Console.WriteLine($"Window '{windowName}' not found.");
-                return;
+                Console.WriteLine(friendshipPos);
+                MouseHelper.ClickAt(friendshipPos);
             }
-
-            bool moved = MoveWindow(hWnd, 100, 100, 1650, 739, true);
-            Console.WriteLine(moved ? "Window moved" : "Failed to move window.");
-
-            Rectangle captureArea = new Rectangle(100, 100, 1650, 739);
-            Bitmap screenshot = GetScreenshot(captureArea);
-            screenshot.Save("sceenshot.png");
-            Console.WriteLine("Screenshot saved as screenshot.png");
-
-            // Get the window size and position, this is useful for debugging
-            //if (GetWindowRect(hWnd, out RECT rect))
-            //{
-            //    Console.WriteLine($"Window position: ({rect.Left}, {rect.Top})");
-            //    Console.WriteLine($"Window size: {rect.Width}x{rect.Height}");
-            //}
-            //else
-            //{
-            //    Console.WriteLine("Failed to get window rect.");
-            //}
-        }
-
-        static Bitmap GetScreenshot(Rectangle area)
-        {
-            Bitmap bmp = new Bitmap(area.Width, area.Height);
-            using (Graphics g = Graphics.FromImage(bmp))
+            else
             {
-                g.CopyFromScreen(area.Location, Point.Empty, area.Size);
+                
             }
+            
 
-            return bmp;
+
         }
-
-       
     }
 }
