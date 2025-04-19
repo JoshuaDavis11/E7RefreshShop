@@ -14,6 +14,11 @@ namespace E7RefreshShop
         static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
 
         [DllImport("user32.dll")]
+        static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+        static readonly IntPtr HWND_TOP = IntPtr.Zero;
+        const uint SWP_SHOWWINDOW = 0x0040;
+
+        [DllImport("user32.dll")]
         static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
         [DllImport("user32.dll")]
@@ -28,10 +33,14 @@ namespace E7RefreshShop
             ShowWindow(hWnd, SW_RESTORE);         // Restore if minimized
             SetForegroundWindow(hWnd);            // Bring to front
         }
+        public static void MoveWindowWithSetWindowPos(IntPtr hWnd, int x, int y, int width, int height)
+        {
+            SetWindowPos(hWnd, HWND_TOP, x, y, width, height, SWP_SHOWWINDOW);
+        }
         public static void MoveGoogleGamesWindowHelper()
         {
-            //This only resizes and moves the application if you're running it through Google games beta
-            string windowName = "Epic Seven : Origin";
+            
+            string windowName = "LDPlayer";
             IntPtr hWnd = FindWindow(null, windowName);
             
             //Bring the application to the front
@@ -46,8 +55,9 @@ namespace E7RefreshShop
                 Console.WriteLine($"Window '{windowName}' not found.");
                 return;
             }
-            bool moved = MoveWindow(hWnd, 100, 100, 1650, 739, true);
-            Console.WriteLine(moved ? "Window moved" : "Failed to move window.");
+            //bool moved = MoveWindow(hWnd, 100, 100, 1650, 739, true);
+            MoveWindowWithSetWindowPos(hWnd, 100, 100, 1650, 739);
+            //Console.WriteLine(moved ? "Window moved" : "Failed to move window.");
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using System.Threading;
+using AutoHotkey.Interop;
 
 namespace E7RefreshShop
 {
@@ -20,7 +21,7 @@ namespace E7RefreshShop
         private const int MOUSEEVENTF_LEFTDOWN = 0x02;
         private const int MOUSEEVENTF_LEFTUP = 0x04;
 
-        public static void ClickAt(Point point)
+        public static void RefreshButtonClickAt(Point point)
         {
             Thread.Sleep(100); // Give it time to focus
             // Move cursor
@@ -35,6 +36,21 @@ namespace E7RefreshShop
             Thread.Sleep(50); // Optional delay for realism
             mouse_event(MOUSEEVENTF_LEFTUP, point.X, point.Y, 0, UIntPtr.Zero);
         }
+
+        public static void BuyItemClickAt(Point point)
+        {
+            Thread.Sleep(100); // Give it time to focus
+
+            // Move cursor
+            SetCursorPos(point.X + 550, point.Y + 25);
+
+            // Perform click
+            mouse_event(MOUSEEVENTF_LEFTDOWN, point.X + 550, point.Y + 25, 0, UIntPtr.Zero);
+            Thread.Sleep(50); // Optional delay for realism
+            mouse_event(MOUSEEVENTF_LEFTUP, point.X + 550, point.Y + 25, 0, UIntPtr.Zero);
+        }
+
+
     }
 
 }
