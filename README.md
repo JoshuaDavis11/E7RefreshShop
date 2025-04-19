@@ -1,5 +1,7 @@
 # E7RefreshShop
 
-This is a project that decided to build as it solves an annoying repetivite task in a game i enjoy and also counts as a project for my portfolio.
+This is a project that i decided to build as it solves an annoying repetivite task in a game i enjoy and also counts as a project for my portfolio.
 
-This program will automatically refresh your epic seven secret shop and detect if bookmarks/mystic medals are inside and will purchase them and then repeat untill you run out of skytones.
+This program will automatically refresh your epic seven secret shop and detect if bookmarks/mystic medals are inside and will purchase them and then repeat untill you run out of skytones or press the Esc key.
+
+Please note: Currently this program only works on the emulator LDPlayer.
