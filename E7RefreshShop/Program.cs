@@ -20,6 +20,7 @@ namespace E7RefreshShop
             int bookmarkCounter = 0;
             int mysticCounter = 0;
             int refreshCounter = 0;
+
             //Move the window to predefined size and position
             MoveWindowHelper.MoveGoogleGamesWindowHelper();
 
@@ -37,11 +38,12 @@ namespace E7RefreshShop
             Bitmap bookmarksTemplate = new Bitmap(bookmarksTemplatePath);
 
             string mysticTemplatePath = Path.Combine("assests", "mysticONE.png");
-            Bitmap mysticTemplate = new Bitmap(bookmarksTemplatePath);
+            Bitmap mysticTemplate = new Bitmap(mysticTemplatePath);
 
                     
             Point buyItemConfirmationPos = (new Point(1000, 625));
 
+            //need to add functionaly so that the program scrolls to the bottom of the shop and checks all again to ensure all items were verified
             while (!HotKeyListener.EscPressed)
             {
                 System.Threading.Thread.Sleep(1000);
@@ -59,7 +61,7 @@ namespace E7RefreshShop
 
                 foreach (var pos in friendshipPos)
                 {
-                    //Console.WriteLine("Found Friendship");
+                    Console.WriteLine("Found Friendship");
                     MouseHelper.BuyItemClickAt(pos);
                     Thread.Sleep(1000);
                     MouseHelper.RefreshButtonClickAt(buyItemConfirmationPos);
@@ -69,7 +71,7 @@ namespace E7RefreshShop
                 //currently the mystic template is never matched, need to fix this
                 foreach (var pos in mysticPos)
                 {
-                    //Console.WriteLine("Found Mystic");
+                    Console.WriteLine("Found Mystic");
                     MouseHelper.BuyItemClickAt(pos);
                     Thread.Sleep(1000);
                     MouseHelper.RefreshButtonClickAt(buyItemConfirmationPos);
@@ -78,16 +80,17 @@ namespace E7RefreshShop
                 }
                 foreach (var pos in bookmarkPos)
                 {
-                    //Console.WriteLine("Found Bookmark");
+                    Console.WriteLine("Found Bookmark");
                     MouseHelper.BuyItemClickAt(pos);
                     Thread.Sleep(1000);
                     MouseHelper.RefreshButtonClickAt(buyItemConfirmationPos);
                     Thread.Sleep(2000);
                     bookmarkCounter++;
                 }
+
                 if (refreshButtonPos != null)
                 {
-                    //Console.WriteLine("Found Refresh button");
+                    Console.WriteLine("Found Refresh button");
                     MouseHelper.RefreshButtonClickAt(refreshButtonPos.Value);
                     Thread.Sleep(1000);
                     MouseHelper.RefreshButtonClickAt(new Point(1100, 600));

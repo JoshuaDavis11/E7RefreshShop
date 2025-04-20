@@ -32,7 +32,7 @@ namespace E7RefreshShop
         }
 
         //Template matching
-        public static Point? FindTemplate(Bitmap sourceImage, Bitmap templateImage, double threshold = 0.70)
+        public static Point? FindTemplate(Bitmap sourceImage, Bitmap templateImage, double threshold = 0.90)
         {
             using var source = sourceImage.ToImage<Bgr, byte>();
             using var template = templateImage.ToImage<Bgr, byte>();
