@@ -12,6 +12,8 @@ namespace E7RefreshShop
 {
     public class ScreenshotHelper
     {
+       
+
         public static Bitmap GetScreenshot(Rectangle area)
         {
             Bitmap bmp = new(area.Width, area.Height);
@@ -86,6 +88,60 @@ namespace E7RefreshShop
             }
 
             return matchPoints;
+        }
+
+
+        public static void CheckForCurrencies(Bitmap screenShot, Currency currency)
+        {
+            
+            var friendshipPos = ScreenshotHelper.FindAllTemplateMatches(screenShot, currency.FriendShip);
+            var bookmarkPos = ScreenshotHelper.FindAllTemplateMatches(screenShot, currency.Covenant);
+            var mysticPos = ScreenshotHelper.FindAllTemplateMatches(screenShot, currency.Mystic);
+
+
+            foreach (var pos in friendshipPos)
+            {
+                //Console.WriteLine("Found Friendship");
+                MouseHelper.BuyItemClickAt(pos);
+                Thread.Sleep(1000);
+                MouseHelper.RefreshButtonClickAt(new Point(1000, 625));
+                Thread.Sleep(2000);
+
+            }
+            //currently the mystic template is never matched, need to fix this
+            foreach (var pos in mysticPos)
+            {
+                //Console.WriteLine("Found Mystic");
+                MouseHelper.BuyItemClickAt(pos);
+                Thread.Sleep(1000);
+                MouseHelper.RefreshButtonClickAt(new Point(1000, 625));
+                Thread.Sleep(2000);
+
+            }
+            foreach (var pos in bookmarkPos)
+            {
+                //Console.WriteLine("Found Bookmark");
+                MouseHelper.BuyItemClickAt(pos);
+                Thread.Sleep(1000);
+                MouseHelper.RefreshButtonClickAt(new Point(1000, 625));
+                Thread.Sleep(2000);
+
+            }
+
+           
+        }
+        public static void RefreshStore(Bitmap screenShot, Currency currency)
+        {
+
+            Point? refreshButtonPos = ScreenshotHelper.FindTemplate(screenShot, currency.RefreshButton);
+            if (refreshButtonPos != null)
+            {
+                Console.WriteLine("Found Refresh button");
+                MouseHelper.RefreshButtonClickAt(refreshButtonPos.Value);
+                Thread.Sleep(1000);
+                MouseHelper.RefreshButtonClickAt(new Point(1100, 600));
+
+            }
         }
 
     }

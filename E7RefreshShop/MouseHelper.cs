@@ -20,6 +20,9 @@ namespace E7RefreshShop
 
         private const int MOUSEEVENTF_LEFTDOWN = 0x02;
         private const int MOUSEEVENTF_LEFTUP = 0x04;
+        private const int MOUSEEVENTF_WHEEL = 0x0800;
+
+       
 
         public static void RefreshButtonClickAt(Point point)
         {
@@ -49,7 +52,11 @@ namespace E7RefreshShop
             Thread.Sleep(50); // Optional delay for realism
             mouse_event(MOUSEEVENTF_LEFTUP, point.X + 550, point.Y + 25, 0, UIntPtr.Zero);
         }
-
+         public static void ScrollDown()
+        {
+            SetCursorPos(1000, 600); 
+            mouse_event(MOUSEEVENTF_WHEEL, 0, 0, -500, UIntPtr.Zero); // Scroll down
+        }
 
     }
 

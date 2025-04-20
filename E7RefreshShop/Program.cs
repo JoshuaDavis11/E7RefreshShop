@@ -16,10 +16,12 @@ namespace E7RefreshShop
     {
         static void Main(string[] args)
         {
-            int friendshipCounter = 0;
-            int bookmarkCounter = 0;
-            int mysticCounter = 0;
-            int refreshCounter = 0;
+            // Load the images for the currencies
+            Currency currency = new Currency();
+            currency.RefreshButton = new Bitmap(Path.Combine("assests", "refreshbutton.png"));
+            currency.FriendShip = new Bitmap(Path.Combine("assests", "friendship.png"));
+            currency.Mystic = new Bitmap(Path.Combine("assests", "mysticONE.png"));
+            currency.Covenant = new Bitmap(Path.Combine("assests", "Covenant.png"));
 
             //Move the window to predefined size and position
             MoveWindowHelper.MoveGoogleGamesWindowHelper();
@@ -27,79 +29,33 @@ namespace E7RefreshShop
             //Start listening for Esc key press
             HotKeyListener.StartListening();
 
-            //Get the path to the template images
-            string refreshTemplatePath = Path.Combine("assests", "refreshbutton.png");
-            Bitmap refreshTemplate = new Bitmap(refreshTemplatePath);
-
-            string friendshipTemplatePath = Path.Combine("assests", "friendship.png");
-            Bitmap friendshipTemplate = new Bitmap(friendshipTemplatePath);
-
-            string bookmarksTemplatePath = Path.Combine("assests", "Covenant.png");
-            Bitmap bookmarksTemplate = new Bitmap(bookmarksTemplatePath);
-
-            string mysticTemplatePath = Path.Combine("assests", "mysticONE.png");
-            Bitmap mysticTemplate = new Bitmap(mysticTemplatePath);
-
-                    
-            Point buyItemConfirmationPos = (new Point(1000, 625));
-
-            //need to add functionaly so that the program scrolls to the bottom of the shop and checks all again to ensure all items were verified
+            // Loop over screenshot and check for currencies untill user presses Esc
             while (!HotKeyListener.EscPressed)
             {
+                //Wait for a second to allow the game to load
                 System.Threading.Thread.Sleep(1000);
                
                 //Take a screenshot of the game window
                 var screenShot = ScreenshotHelper.TakeScreenShot();
 
+                //Check for currencies in the screenshot
+                ScreenshotHelper.CheckForCurrencies(screenShot,currency);
 
-                Point? refreshButtonPos = ScreenshotHelper.FindTemplate(screenShot, refreshTemplate);
-                var friendshipPos = ScreenshotHelper.FindAllTemplateMatches(screenShot, friendshipTemplate);
-                var bookmarkPos = ScreenshotHelper.FindAllTemplateMatches(screenShot, bookmarksTemplate);
-                var mysticPos = ScreenshotHelper.FindAllTemplateMatches(screenShot, mysticTemplate);
+                //need to add functionaly here so that the program scrolls to the bottom of the shop and checks all again to ensure all items were verified
+                MouseHelper.ScrollDown();
 
+                //Sleep for a second to allow the scroll to finish
+                System.Threading.Thread.Sleep(1500);
 
+                //Take a screenshot of the game window
+                var screenShotAfterScrolling = ScreenshotHelper.TakeScreenShot();
 
-                foreach (var pos in friendshipPos)
-                {
-                    Console.WriteLine("Found Friendship");
-                    MouseHelper.BuyItemClickAt(pos);
-                    Thread.Sleep(1000);
-                    MouseHelper.RefreshButtonClickAt(buyItemConfirmationPos);
-                    Thread.Sleep(2000);
-                    friendshipCounter++;
-                }
-                //currently the mystic template is never matched, need to fix this
-                foreach (var pos in mysticPos)
-                {
-                    Console.WriteLine("Found Mystic");
-                    MouseHelper.BuyItemClickAt(pos);
-                    Thread.Sleep(1000);
-                    MouseHelper.RefreshButtonClickAt(buyItemConfirmationPos);
-                    Thread.Sleep(2000);
-                    mysticCounter++;
-                }
-                foreach (var pos in bookmarkPos)
-                {
-                    Console.WriteLine("Found Bookmark");
-                    MouseHelper.BuyItemClickAt(pos);
-                    Thread.Sleep(1000);
-                    MouseHelper.RefreshButtonClickAt(buyItemConfirmationPos);
-                    Thread.Sleep(2000);
-                    bookmarkCounter++;
-                }
+                //Check for currencies in the screenshot after scrolling
+                ScreenshotHelper.CheckForCurrencies(screenShotAfterScrolling, currency);
+                ScreenshotHelper.RefreshStore(screenShotAfterScrolling, currency);
 
-                if (refreshButtonPos != null)
-                {
-                    Console.WriteLine("Found Refresh button");
-                    MouseHelper.RefreshButtonClickAt(refreshButtonPos.Value);
-                    Thread.Sleep(1000);
-                    MouseHelper.RefreshButtonClickAt(new Point(1100, 600));
-                    refreshCounter++;
-                }
-                Console.WriteLine($"Friendship Count: {friendshipCounter}, Bookmark Count: {bookmarkCounter}, " +
-                    $"Mystic Count {mysticCounter}, Refresh Count {refreshCounter} ");
-               Thread.Sleep(1000);
-
+                //Sleep the program to allow for the refresh animation to finish before restarting the loop
+                Thread.Sleep(1000);
             }
         }
     }
