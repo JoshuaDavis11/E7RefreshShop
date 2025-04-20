@@ -7,6 +7,5 @@ This program will automatically refresh your epic seven secret shop and detect i
 Please note: 
 Currently this program only works on the emulator LDPlayer.
 You need to start the program when already inside the secret shop.
-This program currently cannot detect Mystic medals yet (hopefully i figure out how to fix that soon).
 
 
