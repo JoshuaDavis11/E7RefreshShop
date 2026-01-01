@@ -1,11 +1,26 @@
 # E7RefreshShop
 
-This is a project that i decided to build as it solves an annoying repetivite task in a game i enjoy and also counts as a project for my portfolio.
+An automation tool for **Epic Seven** that refreshes the Secret Shop and automatically purchases valuable items.
 
-This program will automatically refresh your epic seven secret shop and detect if bookmarks/mystic medals are inside and will purchase them and then repeat untill you run out of skytones or press the Esc key.
+## Description
 
-Please note: 
-Currently this program only works on the emulator LDPlayer.
-You need to start the program when already inside the secret shop.
+E7RefreshShop automates the repetitive process of refreshing the Epic Seven Secret Shop. The program detects **Bookmarks** and **Mystic Medals**, purchases them when found, and continues refreshing until stopped.
 
+This project was built both to solve a personal pain point and as a portfolio automation project.
 
+## Features
+
+- Automatically refreshes the Secret Shop
+- Detects Bookmarks and Mystic Medals
+- Purchases detected items
+- Runs until Skystones are depleted or the **Esc** key is pressed
+
+## Requirements
+
+- LDPlayer emulator (only supported platform)
+- Epic Seven must already be inside the Secret Shop before starting the program
+
+## Notes
+
+- Emulator-only support is intentional due to input and screen capture constraints
+- Intended for learning and personal use
